@@ -18,6 +18,7 @@ include_once 'includes/BKJMap_DB.php';
 include_once 'includes/BKJMap_API.php';
 include_once 'includes/AdminFormConfiguration.php';
 include_once 'includes/DataEncryption.php';
+include_once 'includes/AdminFormPOI.php';
 
 class BKJMap {
     private BKJMap_DB   $db;
@@ -79,3 +80,4 @@ class BKJMap {
 
 $bkj_map = new BKJMap();
 $bkj_form =new AdminFormConfiguration( new DataEncryption() );
+$bkj_poi = new AdminFormPOI();
