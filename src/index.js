@@ -1,8 +1,9 @@
-const { render } = wp.element; //we are using wp.element here!
+//const { render } = wp.element; //we are using wp.element here!
+import { createRoot, render, createElement } from '@wordpress/element';
 
 import App from './App';
 
-console.log("loaded react app")
+
 
 document.addEventListener("DOMContentLoaded",()=>{
     if (document.getElementById('poi-root')) { //check if element exists before rendering

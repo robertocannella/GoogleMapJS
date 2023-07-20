@@ -19,10 +19,11 @@ class BKJMap_DB
         // Table names
         $usersTable = $this->wpdb->prefix . 'users';
         $dataTable = $this->wpdb->prefix . $this->prefix .'poi_data';
-
+        $mapCategoryTable = $this->wpdb->prefix . $this->prefix . 'poi_categories';
         // Check if tables exist
         $usersTableExists = $this->wpdb->get_var("SHOW TABLES LIKE '$usersTable'") === $usersTable;
         $defaultDataTableExists = $this->wpdb->get_var("SHOW TABLES LIKE '$dataTable'") === $dataTable;
+        $mapCategoryTableExists = $this->wpdb->get_var("SHOW TABLES LIKE '$mapCategoryTable'") === $mapCategoryTable;
 
         // Name	Address	City	State	ZIP	Phone number	URL	Category	GEOCODE
         // Create tables if they don't exist
@@ -36,10 +37,17 @@ class BKJMap_DB
                 zip_code VARCHAR(10),
                 phone VARCHAR(20),
                 url VARCHAR(255),
-                category VARCHAR(255),
-                geo_code_lat VARCHAR(255),
-                geo_code_long VARCHAR(255)                
+                category_id INT,
+                geo_code VARCHAR(255),
+                FOREIGN KEY (category_id) REFERENCES $mapCategoryTable(id)
             ) $this->charset;");
+        }
+        if (!$mapCategoryTableExists){
+            dbDelta("CREATE TABLE $mapCategoryTable (
+                id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(55)
+        
+            ) $this->charset" ) ;
         }
 
     }

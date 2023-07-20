@@ -9,7 +9,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/, // Apply the loader to .js files
+                test: /\.(js|jsx)$/, // Apply the loader to .js files
                 exclude: /node_modules/, // Don't apply the loader to node_modules
                 use: {
                     loader: 'babel-loader', // Use the Babel loader

@@ -20,6 +20,7 @@ include_once 'includes/AdminFormConfiguration.php';
 include_once 'includes/DataEncryption.php';
 include_once 'includes/AdminFormPOI.php';
 
+
 class BKJMap {
     private BKJMap_DB   $db;
     private BRJMap_API  $api;
@@ -67,6 +68,7 @@ class BKJMap {
 
             wp_enqueue_script( 'bkj-map-admin-js', plugins_url( '/bkj-map-admin.js', __FILE__ ), null, time() );
             wp_enqueue_style( 'bkj-map-admin-css', plugins_url( '/bkj-map-admin.css', __FILE__ ), null, time() );
+            wp_enqueue_script('font-awesome-6', '//kit.fontawesome.com/a681bea563.js',null,6.0);
 
 
             // LOAD react page
@@ -88,3 +90,4 @@ class BKJMap {
 $bkj_map = new BKJMap();
 $bkj_form =new AdminFormConfiguration( new DataEncryption() );
 $bkj_poi = new AdminFormPOI();
+$bkj_api = new BKJMap_API();
