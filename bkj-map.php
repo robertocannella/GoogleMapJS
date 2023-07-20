@@ -61,10 +61,17 @@ class BKJMap {
         // Enqueue scripts only on your plugin's admin page
 
         if ( isset( $_GET['page'] ) &&
-            ( $_GET['page'] === 'bkj-map-settings-page') ) {
+            ( $_GET['page'] === 'bkj-map-settings-page') ||
+            ( $_GET['page'] === 'bkj-map-settings-poi' )
+            ) {
 
             wp_enqueue_script( 'bkj-map-admin-js', plugins_url( '/bkj-map-admin.js', __FILE__ ), null, time() );
             wp_enqueue_style( 'bkj-map-admin-css', plugins_url( '/bkj-map-admin.css', __FILE__ ), null, time() );
+
+
+            // LOAD react page
+            wp_enqueue_script( 'react-map-js', plugins_url( '/build/index.js', __FILE__ ), ['wp-element'], time() );
+//            wp_enqueue_style( 'react-map-css', plugins_url( '/build/main.css', __FILE__ ), null, time() );
 
 
             wp_localize_script('bkj-map-admin-js','globalSiteData', [

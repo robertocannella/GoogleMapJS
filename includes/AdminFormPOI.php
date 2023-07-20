@@ -18,8 +18,8 @@ class AdminFormPOI
     }
     public function pointOfInterestHtml():void {
         ?>
-
-        Point of interest table
+            <!-- This is handled by react -->
+        <div id="poi-root"></div>
     <?php
     }
 }

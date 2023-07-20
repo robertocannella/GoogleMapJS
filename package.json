@@ -5,14 +5,30 @@
   "main": "/scr/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js --mode production"
+    "build": "webpack --config webpack.config.js --mode production",
+    "wpbuild": "wp-scripts build",
+    "check-engines": "wp-scripts check-engines",
+    "check-licenses": "wp-scripts check-licenses",
+    "format": "wp-scripts format",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "lint:md:docs": "wp-scripts lint-md-docs",
+    "lint:pkg-json": "wp-scripts lint-pkg-json",
+    "packages-update": "wp-scripts packages-update",
+    "plugin-zip": "wp-scripts plugin-zip",
+    "wpstart": "wp-scripts start",
+    "test:e2e": "wp-scripts test-e2e",
+    "test:unit": "wp-scripts test-unit-js"
   },
   "author": "Roberto Cannella",
   "license": "ISC",
   "keywords": [],
   "devDependencies": {
     "@babel/core": "^7.22.9",
+    "@babel/plugin-syntax-jsx": "^7.22.5",
     "@babel/preset-env": "^7.22.9",
+    "@babel/preset-react": "^7.22.5",
+    "@wordpress/scripts": "^26.8.0",
     "babel-loader": "^9.1.3",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4"
