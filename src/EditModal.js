@@ -121,12 +121,13 @@ const MyModal = ({ data, onClose, onSave, onDataChange, categories }) => {
                             State:
                             <input name="state" style={inputStyle} type="text" value={data.state} onChange={(e) => onDataChange({ ...data, state: e.target.value })} />
                         </label>
+
+                        <label htmlFor="zip" style={labelStyle}>
+                            Zip Code:
+                            <input name="zip" style={inputStyle} type="text" value={data.zip_code} onChange={(e) => onDataChange({ ...data, zip_code: e.target.value })} />
+                        </label>
                     </div>
 
-                    <label htmlFor="zip" style={labelStyle}>
-                        Zip Code:
-                        <input name="zip" style={inputStyle} type="text" value={data.zip_code} onChange={(e) => onDataChange({ ...data, zip_code: e.target.value })} />
-                    </label>
 
                     <label htmlFor="phone" style={labelStyle}>
                         Phone:

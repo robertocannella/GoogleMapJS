@@ -61,10 +61,10 @@ class BKJMap {
 
         // Enqueue scripts only on your plugin's admin page
 
-        if ( isset( $_GET['page'] ) &&
-            ( $_GET['page'] === 'bkj-map-settings-page') ||
-            ( $_GET['page'] === 'bkj-map-settings-poi' )
-            ) {
+        if (
+            ( $_GET['page'] ?? '' ) === 'bkj-map-settings-page' ||
+            ( $_GET['page'] ?? '' ) === 'bkj-map-settings-poi'
+        ) {
 
             wp_enqueue_script( 'bkj-map-admin-js', plugins_url( '/bkj-map-admin.js', __FILE__ ), null, time() );
             wp_enqueue_style( 'bkj-map-admin-css', plugins_url( '/bkj-map-admin.css', __FILE__ ), null, time() );

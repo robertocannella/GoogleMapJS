@@ -106,7 +106,7 @@ export default function ReviewData  () {
                         className={"manage-column column-columnname"}
                         scope={"col"}
                     >
-                        <th>Edit</th>
+                        <th style={{position: 'sticky', top: '0', backgroundColor: "white"}}>Edit</th>
                         {headerKeys.map((key) => (
 
                             <th style={{position: 'sticky', top: '0', backgroundColor: "white"}}
@@ -122,7 +122,7 @@ export default function ReviewData  () {
                             style={{textAlign: "initial", whiteSpace: 'nowrap'}}
                             className={"alternate"}
                         >
-                            <td onClick={()=>openModalWithData(item)} style={{position: "absolute", backgroundColor: "lavender"}}>
+                            <td onClick={()=>openModalWithData(item)} style={{backgroundColor: "lightgray"}}>
                                 <i
                                     style={{cursor: "pointer"}}
                                     className="fa-regular fa-pen-to-square"></i>

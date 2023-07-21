@@ -1,7 +1,27 @@
 import { useState,useEffect } from '@wordpress/element';
 import ReviewData from "./ReviewData";
+import poiNewDataService from "./services/poi-new-data-service";
+import poiNewCategoriesService from "./services/poi-new-categories-service";
 
+class Category {
+    id;
+    name;
+    hex_color;
+}
 
+class POIItem {
+    id;
+    name;
+    address;
+    city;
+    state;
+    zip_code;
+    phone;
+    url;
+    geo_code;
+    category_id
+
+}
 
 const App = () => {
 
@@ -46,11 +66,11 @@ const App = () => {
 
     const csvFileToArray = string => {
 
-        const csvHeader = string.slice(0, string.indexOf("\n")).split("\t");
+        const csvHeader = string.slice(0, string.indexOf("\n")).split("\t").map((header) => header.trim());
         const csvRows = string.slice(string.indexOf("\n") + 1).split("\n");
 
         const array = csvRows.map(i => {
-            const values = i.split("\t");
+            const values = i.split("\t").map((value) => value.trim());
             const obj = csvHeader.reduce((object, header, index) => {
                 object[header] = values[index];
                 return object;
@@ -63,8 +83,64 @@ const App = () => {
     const handleOnImport = (e) => {
         e.preventDefault();
 
+        let newCategories = [];
+        let count = 0;
+        let items = [];
 
-        console.log(e)
+        array.forEach((item)=> {
+            const newItem = new POIItem();
+            newItem.name = item.name;
+            newItem.city = item.city;
+            newItem.address = item.address;
+            newItem.geo_code = item.geo_code;
+            newItem.phone = item.phone;
+            newItem.state = item.state;
+            newItem.url = item.url;
+            newItem.zip_code = item.zip_code;
+
+            const existingCategory = newCategories.find((category) => category.name === item.category);
+
+            if (existingCategory) {
+                // If the category exists, assign its id to the poiItem
+
+                newItem.category_id = existingCategory.id;
+
+            } else {
+                // If the category does not exist, create a new category object
+                const newCategory = {
+                    id: newCategories.length + 1, // Generate a new id (you can use any logic to generate unique ids)
+                    name: item.category,
+                    hex_color: 'ffffff'
+                };
+
+                // Push the new category object to the categories array
+                newCategories.push(newCategory);
+
+                // Assign the new category id to the poiItem
+                newItem.category_id = newCategory.id;
+
+            }
+
+            items.push(newItem);
+
+
+        })
+        // ADD THE CATEGORIES FIRST
+        poiNewCategoriesService.createOrUpdate(newCategories).then((res)=>{
+
+            // THEN ADD THE DATA
+            poiNewDataService.createOrUpdate(items).then((res)=>
+            {
+                setImported(false);
+
+            })
+
+        })
+
+
+
+
+
     }
     const handleOnSubmit = (e) => {
         e.preventDefault();
@@ -89,8 +165,18 @@ const App = () => {
 
     return (
         <div style={{ textAlign: "center", overflow: "auto" }}>
-            <h2> Import New Points of Interest Data </h2>
-            <p>File must be a tab separated file. For example, 'points_of_interest.txt.'  If you are using excel, select all the cells, copy and paste the content into a txt file.</p>
+            <h2 className={"text-lg"}> Import New Points of Interest Data </h2>
+            <ul className={"list-none"}>
+                <li className={"list-item"}>
+                    File must be a tab separated file. For example, 'points_of_interest.txt.'
+                </li>
+                <li className={"list-item"}>
+                If you are using excel, select all the cells, copy and paste the content into a txt file.
+                </li>
+                <li className={"list-item"}>
+                    Importing a new file will overwrite existing data, including CATEGORIES and COLOR MAP
+                </li>
+            </ul>
 
             <form>
                 <input
@@ -102,7 +188,7 @@ const App = () => {
                 />
 
                 <button
-                    className={"button button-primary"}
+                    className={"button button-primary "}
                     onClick={(e) => {
                         handleOnSubmit(e);
                     }}
@@ -154,12 +240,13 @@ const App = () => {
                         className={"button button-primary"}
                         onClick={(e) => {
                             handleOnImport(e);
+
                         }}
                     >
                         Import Data
                     </button>
                     <button
-                        className={"button button-secondary"}
+                        className={"button button-secondary p-4"}
                         onClick={(e) => {
                             setImported(false);
                         }}
@@ -172,10 +259,10 @@ const App = () => {
             {!imported &&
                 <>
                     <hr/>
-                    <h2> Review or Edit current POI data </h2>
+                    <h2  className={"text-lg"}> Review or Edit current POI data </h2>
                     {!review &&
                         <button
-                            className={"button button-primary"}
+                            className={"button button-primary p-4"}
                             onClick={(e) => {
                                 setReview(true);
                                 setImported(false);

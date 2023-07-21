@@ -68,6 +68,25 @@ class AdminFormConfiguration
                 'sanitize_callback' => null,            // Sanitize Callback
                 'default'           => ''               // Default value
             ] );
+        // Register FIELDS HERE
+        add_settings_field(
+            id: 'bkj_map_color_map', // slug-name to identify the field
+            title: 'Color Mapping',      // Show as the label for the field during input
+            callback: [
+                $this,
+                'googleApiHtml'
+            ],   // Function that fills the field with desired inputs. Should echo its output
+            page: 'bkj-map-settings-page', // slug-name of the section of the settings page in which to show the box
+            section: 'bkj_map_first_section' ); // a reference to the section to attach to
+
+
+        register_setting(
+            option_group: 'bkjmapplugin',               // Option Group
+            option_name: 'bkj_map_color_map',      // Option name in the database
+            args: [
+                'sanitize_callback' => null,            // Sanitize Callback
+                'default'           => ''               // Default value
+            ] );
 
     }
 
