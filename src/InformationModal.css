@@ -1,0 +1,47 @@
+/* InformationModal.css */
+.information-modal {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    animation: fadeOut 5s forwards; /* Apply the fade-out animation */
+}
+
+/* Styles for different message types */
+.info {
+    background-color: #2196f3;
+    color: #fff;
+}
+.warning {
+    background-color: #ff9800;
+    color: #fff;
+}
+.success {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.modal-content {
+    display: flex;
+    align-items: center;
+}
+
+.close-button {
+    margin-left: 10px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+/* Keyframes for fade-out animation */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

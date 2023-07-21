@@ -73,7 +73,7 @@ class BKJMap {
 
             // LOAD react page
             wp_enqueue_script( 'react-map-js', plugins_url( '/build/index.js', __FILE__ ), ['wp-element'], time() );
-//            wp_enqueue_style( 'react-map-css', plugins_url( '/build/main.css', __FILE__ ), null, time() );
+            wp_enqueue_style( 'react-map-css', plugins_url( '/build/index.css', __FILE__ ), null, time() );
 
 
             wp_localize_script('bkj-map-admin-js','globalSiteData', [

@@ -1,6 +1,5 @@
 import { useState,useEffect } from '@wordpress/element';
 import ReviewData from "./ReviewData";
-import {forwardAsync} from "@babel/core/lib/gensync-utils/async";
 
 
 

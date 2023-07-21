@@ -80,9 +80,9 @@ class AdminFormConfiguration
             page_title: 'MAP.js Settings',
             menu_title: esc_html__( 'Map.js', 'bkj-map-js' ),
             capability: 'manage_options',
-            icon_url: 'dashicons-admin-site-alt2',
             menu_slug: 'bkj-map-settings-page',
-            callback: [ $this, 'bkjMapHtml' ]
+            callback: [ $this, 'bkjMapHtml' ],
+            icon_url: 'dashicons-admin-site-alt2'
         );
     }
     function googleZoomHtml(): void {

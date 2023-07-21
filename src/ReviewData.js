@@ -2,6 +2,7 @@ import { useState,useEffect } from '@wordpress/element';
 import poiService from "./services/poi-service";
 import catService from "./services/category-service";
 import EditModal from "./EditModal";
+import InformationModal from "./InformationModal";
 
 export default function ReviewData  () {
     const [loading, setLoading] = useState(false);
@@ -10,6 +11,8 @@ export default function ReviewData  () {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({});
     const [categories, setCategories] = useState([]);
+    const [showInformation, setShowInformation] = useState(false)
+    const [information, setInformation] = useState({messageType: '', message: ''});
 
     useEffect(() => {
         setLoading(true);
@@ -81,6 +84,8 @@ export default function ReviewData  () {
         // Here make api request to save data to DB.
         poiService.createOrUpdate(modalData).then(res=> {
             console.log(res)
+            setInformation({messageType: "success", message: "Data updated successfully."})
+            setShowInformation(true)
         })
 
 
@@ -137,7 +142,7 @@ export default function ReviewData  () {
                 </table>
 
             </div>
-
+            {showInformation && <InformationModal seconds={5} showInfo={setShowInformation} message={information.message} messageType={information.messageType}/>}
             {isModalOpen && <EditModal categories={categories} data={modalData} onClose={closeModal} onDataChange={handleModalDataChange} onSave={saveData} />}
         </>
     );

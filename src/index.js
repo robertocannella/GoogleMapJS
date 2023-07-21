@@ -1,5 +1,6 @@
 //const { render } = wp.element; //we are using wp.element here!
 import { createRoot, render, createElement } from '@wordpress/element';
+import './input.css'; // Import the custom CSS file
 
 import App from './App';
 
