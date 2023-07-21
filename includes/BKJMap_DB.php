@@ -58,11 +58,15 @@ class BKJMap_DB
 
     public function create_UpdatePOIData_procedure(): void
     {
-        $dropProcedureSql = "
-              DROP PROCEDURE IF EXISTS UpdatePoiData;
-        ";
-        $procedureSql = "
-            CREATE PROCEDURE UpdatePoiData(
+        $procedureName = 'UpdatePoiData';
+
+        // Check if the procedure exists
+        $checkQuery = "SHOW PROCEDURE STATUS WHERE Name = %s";
+        $exists = $this->wpdb->get_row($this->wpdb->prepare($checkQuery, $procedureName));
+
+        if (!$exists) {
+            $procedureSql = "
+        CREATE PROCEDURE UpdatePoiData(
                 IN p_id INT,
                 IN p_name VARCHAR(255),
                 IN p_address VARCHAR(255),
@@ -96,71 +100,80 @@ class BKJMap_DB
 
         // Execute the procedure creation SQL statement
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        $this->wpdb->query($dropProcedureSql);
         $this->wpdb->query($procedureSql);
+        }
     }
 
     public function create_InsertPOIData_procedure(): void
     {
-        $dropProcedureSQL = "
-            DROP PROCEDURE IF EXISTS InsertPoiData;
-        ";
-        $procedureSql = "
-        CREATE PROCEDURE InsertPoiData(
-            IN p_name VARCHAR(255),
-            IN p_address VARCHAR(255),
-            IN p_city VARCHAR(55),
-            IN p_state CHAR(2),
-            IN p_zip_code VARCHAR(10),
-            IN p_phone VARCHAR(20),
-            IN p_url VARCHAR(255),
-            IN p_category_id INT,
-            IN p_geo_code VARCHAR(255),
-            OUT result INT
-            )
-            BEGIN
-            SET result = 1;
-             
-            INSERT INTO rgo_bkj_map_poi_data (
-                name, address, city, state, zip_code, phone, url, category_id, geo_code
-            ) VALUES (
-                p_name, p_address, p_city, p_state, p_zip_code, p_phone, p_url, p_category_id, p_geo_code
-            );
-        END;
-    ";
+        $procedureName = 'InsertPoiData';
+
+        // Check if the procedure exists
+        $checkQuery = "SHOW PROCEDURE STATUS WHERE Name = %s";
+        $exists = $this->wpdb->get_row($this->wpdb->prepare($checkQuery, $procedureName));
+
+        if(!$exists) {
+            $procedureSql = "
+                CREATE PROCEDURE InsertPoiData(
+                    IN p_name VARCHAR(255),
+                    IN p_address VARCHAR(255),
+                    IN p_city VARCHAR(55),
+                    IN p_state CHAR(2),
+                    IN p_zip_code VARCHAR(10),
+                    IN p_phone VARCHAR(20),
+                    IN p_url VARCHAR(255),
+                    IN p_category_id INT,
+                    IN p_geo_code VARCHAR(255),
+                    OUT result INT
+                    )
+                    BEGIN
+                    SET result = 1;
+                     
+                    INSERT INTO rgo_bkj_map_poi_data (
+                        name, address, city, state, zip_code, phone, url, category_id, geo_code
+                    ) VALUES (
+                        p_name, p_address, p_city, p_state, p_zip_code, p_phone, p_url, p_category_id, p_geo_code
+                    );
+                END;
+            ";
 
         // Execute the procedure creation SQL statement
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        $this->wpdb->query($dropProcedureSQL);
         $this->wpdb->query($procedureSql);
+        }
     }
     public function create_InsertPOICategory_procedure(): void
     {
-        $dropProcedureSQL = "
-            DROP PROCEDURE IF EXISTS InsertPoiCategory;
-        ";
-        $procedureSql = "
-        CREATE PROCEDURE InsertPoiCategory(
-            IN p_id INT,
-            IN p_name VARCHAR(255),
-            IN p_hex_color VARCHAR(255),
-            OUT result INT
-            )
-            BEGIN
-            SET result = 1;
-             
-            INSERT INTO rgo_bkj_map_poi_categories (
-                id, name, hex_color 
-            ) VALUES (
-                p_id, p_name, p_hex_color
-            );
-        END;
-    ";
+        $procedureName = 'InsertPoiCategory';
 
-        // Execute the procedure creation SQL statement
-        require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        $this->wpdb->query($dropProcedureSQL);
-        $this->wpdb->query($procedureSql);
+        // Check if the procedure exists
+        $checkQuery = "SHOW PROCEDURE STATUS WHERE Name = %s";
+        $exists = $this->wpdb->get_row($this->wpdb->prepare($checkQuery, $procedureName));
+
+        if(!$exists){
+            $procedureSql = "
+                     CREATE PROCEDURE InsertPoiCategory(
+                        IN p_id INT,
+                        IN p_name VARCHAR(255),
+                        IN p_hex_color VARCHAR(255),
+                        OUT result INT
+                        )
+                        BEGIN
+                        SET result = 1;
+                         
+                        INSERT INTO rgo_bkj_map_poi_categories (
+                            id, name, hex_color 
+                        ) VALUES (
+                            p_id, p_name, p_hex_color
+                        );
+                    END;
+                ";
+
+            // Execute the procedure creation SQL statement
+            require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+            $this->wpdb->query($procedureSql);
+        }
+
     }
 
 }

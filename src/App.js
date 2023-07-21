@@ -164,9 +164,10 @@ const App = () => {
     const headerKeys = Object.keys(Object.assign({}, ...array));
 
     return (
-        <div style={{ textAlign: "center", overflow: "auto" }}>
-            <h2 className={"text-lg"}> Import New Points of Interest Data </h2>
-            <ul className={"list-none"}>
+        <div style={{ overflow: "auto" }}>
+            <div className={"border-2 p-4"}>
+            <h2 className={"text-2xl pb-2"}> Import New Points of Interest Data </h2>
+            <ul className={"list-disc"}>
                 <li className={"list-item"}>
                     File must be a tab separated file. For example, 'points_of_interest.txt.'
                 </li>
@@ -175,6 +176,9 @@ const App = () => {
                 </li>
                 <li className={"list-item"}>
                     Importing a new file will overwrite existing data, including CATEGORIES and COLOR MAP
+                </li>
+                <li className={"list-item"}>
+                    After reviewing the data, click the import button below the table.
                 </li>
             </ul>
 
@@ -196,7 +200,7 @@ const App = () => {
                     Review TSV
                 </button>
             </form>
-
+            </div>
             <br />
 
             {imported &&
@@ -259,7 +263,7 @@ const App = () => {
             {!imported &&
                 <>
                     <hr/>
-                    <h2  className={"text-lg"}> Review or Edit current POI data </h2>
+                    <h2  className={"text-2xl"}> Review or Edit current POI data </h2>
                     {!review &&
                         <button
                             className={"button button-primary p-4"}

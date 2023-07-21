@@ -1,5 +1,7 @@
 <?php
 
+use JetBrains\PhpStorm\NoReturn;
+
 class AdminFormConfiguration
 {
     public function __construct(public DataEncryption $data_encryption )
@@ -8,6 +10,8 @@ class AdminFormConfiguration
         add_action( 'admin_init', [ $this, 'settings' ] );
 
         add_filter( 'pre_update_option_bkj_map_google_api_key', [ $this, 'encryptData' ] );
+
+        add_action( 'admin_post_run_custom_script', [ $this, 'handle_custom_script' ] );
 
     }
     function settings(): void {
@@ -68,13 +72,14 @@ class AdminFormConfiguration
                 'sanitize_callback' => null,            // Sanitize Callback
                 'default'           => ''               // Default value
             ] );
-        // Register FIELDS HERE
+
+        // Google Zoom
         add_settings_field(
-            id: 'bkj_map_color_map', // slug-name to identify the field
-            title: 'Color Mapping',      // Show as the label for the field during input
+            id: 'bkj_map_snazzy_map', // slug-name to identify the field
+            title: 'Snazzy JSON',      // Show as the label for the field during input
             callback: [
                 $this,
-                'googleApiHtml'
+                'snazzyMapHtml'
             ],   // Function that fills the field with desired inputs. Should echo its output
             page: 'bkj-map-settings-page', // slug-name of the section of the settings page in which to show the box
             section: 'bkj_map_first_section' ); // a reference to the section to attach to
@@ -82,11 +87,15 @@ class AdminFormConfiguration
 
         register_setting(
             option_group: 'bkjmapplugin',               // Option Group
-            option_name: 'bkj_map_color_map',      // Option name in the database
+            option_name: 'bkj_map_snazzy_map',      // Option name in the database
             args: [
                 'sanitize_callback' => null,            // Sanitize Callback
                 'default'           => ''               // Default value
             ] );
+
+
+
+
 
     }
 
@@ -120,7 +129,8 @@ class AdminFormConfiguration
         }
 
         ?>
-        <input type="password" class="key-field" name="bkj_map_google_api_key"
+        <label for="bkj_map_google_api_key" class="flex">Encrypted in the database.</label>
+        <input type="password" class="key-field" name="bkj_map_google_api_key" id="bkj_map_google_api_key"
                value="<?php echo esc_attr( $decrypted_key ) ?>"/>
 
         <?php
@@ -140,11 +150,27 @@ class AdminFormConfiguration
             </form>
 
 
+            <form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
+                <?php
+                // Add the WordPress nonce field for security
+                wp_nonce_field( 'custom_action', 'custom_action_nonce' );
+                ?>
+                <input type="hidden" name="action" value="run_custom_script">
+                <button type="submit" class="button button-primary"><?php esc_html_e( 'Generate Map', 'bkj-map-js' ); ?></button>
+            </form>
 
         </div>
         <?php
     }
 
+    function snazzyMapHtml(): void {
+        $code = get_option( 'bkj_map_snazzy_map' );
+        ?>
+        <textarea name="bkj_map_snazzy_map" id="bkj_map_snazzy_map" cols="100" rows="20"><?php echo esc_attr( $code ) ?></textarea>
+
+
+        <?php
+    }
     /**** ENCRYPTION FUNCTIONS */
 
     function encryptData( $input ): string {
@@ -162,5 +188,21 @@ class AdminFormConfiguration
         }
 
         return 'Not Set';
+    }
+
+    // Callback function to handle the custom script
+    #[NoReturn] public function handle_custom_script(): void
+    {
+        // Verify the nonce for security
+        if ( ! isset( $_POST['custom_action_nonce'] ) || ! wp_verify_nonce( $_POST['custom_action_nonce'], 'custom_action' ) ) {
+            wp_die( 'Invalid nonce.' );
+        }
+
+        require_once plugin_dir_path( __FILE__ ) . 'process.php';
+
+
+        // Redirect back to the admin page after processing
+        wp_safe_redirect( admin_url( 'admin.php?page=bkj-map-settings-page' ) );
+        exit;
     }
 }

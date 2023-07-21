@@ -98,7 +98,6 @@ class BKJMap_API {
         $data = [];
 
         if ($results) {
-            // Loop through the results and access the data
 
             foreach ($results as $result) {
                 $poi_item = new POI_CATEGORY(

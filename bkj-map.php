@@ -19,6 +19,7 @@ include_once 'includes/BKJMap_API.php';
 include_once 'includes/AdminFormConfiguration.php';
 include_once 'includes/DataEncryption.php';
 include_once 'includes/AdminFormPOI.php';
+include_once 'includes/AdminFormColorMap.php';
 
 
 class BKJMap {
@@ -63,7 +64,8 @@ class BKJMap {
 
         if (
             ( $_GET['page'] ?? '' ) === 'bkj-map-settings-page' ||
-            ( $_GET['page'] ?? '' ) === 'bkj-map-settings-poi'
+            ( $_GET['page'] ?? '' ) === 'bkj-map-settings-poi'  ||
+            ( $_GET['page'] ?? '' ) === 'bkj-map-settings-color-map'
         ) {
 
             wp_enqueue_script( 'bkj-map-admin-js', plugins_url( '/bkj-map-admin.js', __FILE__ ), null, time() );
@@ -91,3 +93,4 @@ $bkj_map = new BKJMap();
 $bkj_form =new AdminFormConfiguration( new DataEncryption() );
 $bkj_poi = new AdminFormPOI();
 $bkj_api = new BKJMap_API();
+$bkj_color_map = new AdminFormColorMap();
